@@ -1,0 +1,27 @@
+*.log
+*.log
+.cache
+.DS_Store
+.idea
+.vscode
+.npmrc
+
+node_modules
+coverage
+dist/
+core/esm/
+sn-navigation/
+
+test/integration/artifacts
+test/integration/test-report
+node_modules
+
+# yarn
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+*.zip

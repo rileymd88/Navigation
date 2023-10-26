@@ -1,0 +1,82 @@
+{
+  "scriptappy": "1.1.0",
+  "info": {
+    "name": "@nebula.js/sn-shape:properties",
+    "description": "Shape generic object definition",
+    "version": "1.0.3",
+    "license": "MIT",
+    "stability": "experimental",
+    "x-qlik-visibility": "public"
+  },
+  "entries": {
+    "properties": {
+      "kind": "function",
+      "params": [],
+      "entries": {
+        "version": {
+          "description": "Current version of this generic object definition",
+          "type": "string"
+        },
+        "title": {
+          "optional": true,
+          "defaultValue": "",
+          "type": "string"
+        },
+        "subtitle": {
+          "optional": true,
+          "defaultValue": "",
+          "type": "string"
+        },
+        "footnote": {
+          "optional": true,
+          "defaultValue": "",
+          "type": "string"
+        },
+        "showTitles": {
+          "defaultValue": false,
+          "type": "boolean"
+        },
+        "disableNavMenu": {
+          "defaultValue": true,
+          "type": "boolean"
+        },
+        "showDetails": {
+          "defaultValue": false,
+          "type": "boolean"
+        },
+        "components": {
+          "type": "array"
+        },
+        "shape": {
+          "type": "#/definitions/ShapeConfig"
+        }
+      }
+    }
+  },
+  "definitions": {
+    "StrokeConfig": {
+      "description": "Represents the default stroke configuration for a component.",
+      "kind": "alias",
+      "items": {
+        "type": "Object"
+      }
+    },
+    "ColorConfig": {
+      "description": "Represents the default background color configuration for a component.",
+      "kind": "alias",
+      "items": {
+        "type": "Object"
+      }
+    },
+    "ShapeConfig": {
+      "description": "Represents the shape configuration for an app.",
+      "kind": "alias",
+      "items": {
+        "type": "Object"
+      }
+    },
+    "bgColor": {
+      "type": "#/definitions/ColorConfig"
+    }
+  }
+}

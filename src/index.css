@@ -1,0 +1,16 @@
+.init-component {
+    height: 100%;
+}
+
+article[tid="qv-object-sn-navigation"] {
+    border: none !important;
+}
+
+article[tid="qv-object-sn-navigation"] .qv-inner-object {
+    background-color: transparent !important;
+    padding: 0 !important;
+}
+
+article[tid="qv-object-sn-navigation"] .qv-object-header .thin {
+    display: none !important;
+}

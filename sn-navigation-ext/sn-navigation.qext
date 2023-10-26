@@ -1,0 +1,10 @@
+{
+  "name": "Navigation",
+  "version": "1.0.0",
+  "description": "Navigation",
+  "author": "QlikTech International AB",
+  "icon": "sn-navigation",
+  "preview": "",
+  "type": "visualization",
+  "supernova": true
+}

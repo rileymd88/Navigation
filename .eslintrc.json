@@ -1,0 +1,67 @@
+{
+  "root": true,
+  "env": {
+    "browser": true
+  },
+  "parserOptions": {
+    "sourceType": "module"
+  },
+  "extends": [
+    "airbnb-base",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended"
+  ],
+  "plugins": [
+    "prettier",
+    "@typescript-eslint"
+  ],
+  "rules": {
+    "no-plusplus": 0,
+    "no-bitwise": 0,
+    "no-unused-expressions": 0,
+    "import/no-extraneous-dependencies": [
+      2,
+      {
+        "devDependencies": true
+      }
+    ],
+    "no-param-reassign": [
+      "error",
+      {
+        "props": false
+      }
+    ],
+    "import/no-unresolved": 0,
+    "import/extensions": 0
+  },
+  "overrides": [
+    {
+      "files": [
+        "src/*"
+      ],
+      "parser": "@typescript-eslint/parser",
+      "parserOptions": {
+        "project": [
+          "./tsconfig.json"
+        ]
+      },
+      "rules": {
+        "@typescript-eslint/no-unused-vars": [
+          0,
+          {
+            "argsIgnorePattern": "^_"
+          }
+        ]
+      }
+    }
+  ],
+  "ignorePatterns": [
+    "dist/*",
+    "coverage/*",
+    ".yarn/*",
+    "core/esm/*",
+    "api-spec/*",
+    "sn-navigation-ext/*",
+    "src/object-properties.d.ts"
+  ]
+}
