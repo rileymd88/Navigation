@@ -11,6 +11,7 @@ coverage
 dist/
 core/esm/
 sn-navigation/
+sn-navigation-ext
 
 test/integration/artifacts
 test/integration/test-report
