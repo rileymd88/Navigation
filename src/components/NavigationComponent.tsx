@@ -24,6 +24,15 @@ interface NavigationComponentProps {
   theme: stardust.Theme;
 }
 
+const toCSSClassName = (str: string) => {
+  return str
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
+};
+
 const NavigationComponent = ({ app, categories, senseNavigation, props, id, theme }: NavigationComponentProps) => {
   const [collapsed, setCollapsed] = useState<string[]>([]);
   const [currentSheetId, setCurrentSheetId] = useState("");
@@ -152,21 +161,21 @@ const NavigationComponent = ({ app, categories, senseNavigation, props, id, them
     return showHide ? (
       <div>
         <ListItemButton
-          className={`sn-navigation-category-button sn-navigation-category-button-level-${level} sn-navigation-category-button-${category.label}`}
+          className={`sn-navigation-category-button sn-navigation-category-button-level-${level} sn-navigation-category-button-${toCSSClassName(category.label)}`}
           sx={{ pl: Math.max(4 * level, 1.5), pr: 1.5, pt: 1.5, pb: 1.5, backgroundColor: props.buttonColor.color }}
           key={category.cId}
           onClick={() => handleExpandClick(category)}
         >
           {category.showIcon ? (
             <ListItemIcon
-              className={`sn-navigation-category-icon sn-navigation-category-icon-level-${level} sn-navigation-category-icon-${category.label}`}
+              className={`sn-navigation-category-icon sn-navigation-category-icon-level-${level} sn-navigation-category-icon-${toCSSClassName(category.label)}`}
               sx={{ pl: 1 }}
             >
               {loadIcon(category.icon)}
             </ListItemIcon>
           ) : null}
           <ListItemText
-            className={`sn-navigation-category-text sn-navigation-category-text-level-${level} sn-navigation-category-text-${category.label}`}
+            className={`sn-navigation-category-text sn-navigation-category-text-level-${level} sn-navigation-category-text-${toCSSClassName(category.label)}`}
             primaryTypographyProps={{
               style: {
                 color: onCurrentSheet ? props.fontColorOnSheet.color : props.fontColor.color,
@@ -179,12 +188,11 @@ const NavigationComponent = ({ app, categories, senseNavigation, props, id, them
           {(category.categories?.length ?? 0) > 0 ? (
             collapsed.includes(category.cId) ? (
               <ExpandLess
-                className={`sn-navigation-category-expand-icon sn-navigation-category-expand-icon-level-${level} sn-navigation-category-expand-icon-${category.label} sn-navigation-category-expand-less`}
+                className={`sn-navigation-category-expand-icon sn-navigation-category-expand-icon-level-${level} sn-navigation-category-expand-icon-${toCSSClassName(category.label)} sn-navigation-category-expand-less`}
               />
             ) : (
               <ExpandMore
-                id={`sn-navigation-expand-icon-id-${category.label}`}
-                className={`sn-navigation-category-expand-icon sn-navigation-category-expand-icon-level-${level} sn-navigation-category-expand-icon-${category.label} sn-navigation-category-expand-more`}
+                className={`sn-navigation-category-expand-icon sn-navigation-category-expand-icon-level-${level} sn-navigation-category-expand-icon-${toCSSClassName(category.label)} sn-navigation-category-expand-more`}
               />
             )
           ) : null}
