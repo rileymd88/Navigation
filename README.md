@@ -33,6 +33,7 @@ The table below lists the available class names and their respective description
 ### v1.0.1
 * Added show hide condition
 * Added font family and font size properties
+* Added ability to add custom css
 * Added and documented CSS class names
 * Minor label/translation fixes
 

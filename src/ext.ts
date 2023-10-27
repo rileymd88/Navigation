@@ -950,6 +950,26 @@ const verticalAlignment = {
     show: (item: Layout) => item.navigation.drawer,
   };
 
+  const customCss = {
+    type: "string",
+    expression: "optional",
+    defaultValue: "",
+    ref: "navigation.customCss",
+    translation: "Custom CSS",
+  };
+
+  const customCssText = {
+    label: `Here you can write any CSS rules. Use "&" as a selector to target this particular element`,
+    component: 'text',
+  }
+
+  const customCssTextExample = {
+    label: `Example: & .qv-inner-object {
+      border: 2px solid green; border-radius: 20px;
+    }`,
+    component: 'text',
+  }
+
   const style = {
     type: "items",
     label: "Style",
@@ -967,6 +987,9 @@ const verticalAlignment = {
       fontSize,
       fontColor,
       fontColorOnSheet,
+      customCss,
+      customCssText,
+      customCssTextExample,
     },
   };
 

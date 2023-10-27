@@ -11,6 +11,6 @@ article[tid="qv-object-sn-navigation"] .qv-inner-object {
     padding: 0 !important;
 }
 
-article[tid="qv-object-sn-navigation"] .qv-object-header .thin {
+article[tid='qv-object-sn-navigation'] div.qv-object-header.thin {
     display: none !important;
 }

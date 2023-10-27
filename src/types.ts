@@ -51,6 +51,7 @@ export type NavigationProps = {
   fontColor: Color;
   fontColorOnSheet: Color;
   backgroundColor: Color;
+  customCss: string;
 };
 
 export interface Layout extends EngineAPI.IGenericObjectLayout {
