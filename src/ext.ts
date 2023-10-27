@@ -1,3 +1,4 @@
+import { stardust } from "@nebula.js/stardust";
 import type { Category, Layout, NavigationProps } from "./types";
 
 interface CategorySchema {
@@ -551,242 +552,300 @@ const ICONS = [
   label: icon,
 }));
 
-const generateCategorySchema = (maxDepth: number, currentDepth: number = 0): CategorySchema => {
-  if (currentDepth >= maxDepth) return {};
-  return {
-    type: "array",
-    ref: "categories",
-    label: "Categories",
-    itemTitleRef: "label",
-    allowAdd: true,
-    allowRemove: true,
-    addTranslation: "Add category",
-    items: {
-      label: {
-        type: "string",
-        ref: "label",
-        label: "Label",
-        expression: "optional",
-      },
-      showIcon: {
-        type: 'boolean',
-        component: 'switch',
-        ref: 'showIcon',
-        label: 'Show icon',
-        defaultValue: false,
-        options: [
-          {
-            value: true,
-            translation: 'properties.on',
+const FONTS = [
+  "Abril Fatface, serif",
+  "Bangers, fantasy",
+  "Bebas Neue, sans serif",
+  "EB Garamond, serif",
+  "Fredoka One, fantasy",
+  "Graduate, fantasy",
+  "Gravitas One, serif",
+  "Indie Flower, fantasy",
+  "Inter, sans-serif",
+  "Lobster, fantasy",
+  "Montserrat, sans-serif",
+  "Nixie One, sans-serif",
+  "Noto Sans, sans-serif",
+  "Open Sans, sans-serif",
+  "PT Serif, serif",
+  "Pacifico, cursive",
+  "Permanent Marker, fantasy",
+  "QlikView Sans, sans-serif",
+  "Raleway, sans-serif",
+  "Rammetto One, fantasy",
+  "Roboto, sans-serif",
+  "Source Sans Pro, sans-serif",
+  "Titan One, fantasy",
+  "Yanone Kaffeesatz, sans-serif",
+].map((font: string) => ({
+  value: font,
+  label: font,
+}));
+
+export default function ext(theme: stardust.Theme, translator: stardust.Translator, flags: stardust.Flags) {
+  const generateCategorySchema = (maxDepth: number, currentDepth: number = 0): CategorySchema => {
+    if (currentDepth >= maxDepth) return {};
+    return {
+      type: "array",
+      ref: "categories",
+      label: "Categories",
+      itemTitleRef: "label",
+      allowAdd: true,
+      allowRemove: true,
+      addTranslation: "Add category",
+      items: {
+        label: {
+          type: "string",
+          ref: "label",
+          label: "Label",
+          expression: "optional",
+        },
+        showIcon: {
+          type: "boolean",
+          component: "switch",
+          ref: "showIcon",
+          label: "Show icon",
+          defaultValue: false,
+          options: [
+            {
+              value: true,
+              translation: "properties.on",
+            },
+            {
+              value: false,
+              translation: "properties.off",
+            },
+          ],
+        },
+        icon: {
+          label: "Icon",
+          component: "expression-with-dropdown",
+          dropdownOnly: true,
+          type: "string",
+          ref: "icon",
+          defaultValue: "None",
+          options: ICONS,
+          show: (item: Category) => item.showIcon,
+        },
+        showDivider: {
+          type: "boolean",
+          component: "switch",
+          ref: "showDivider",
+          label: "Show divider",
+          defaultValue: false,
+          options: [
+            {
+              value: true,
+              translation: "properties.on",
+            },
+            {
+              value: false,
+              translation: "properties.off",
+            },
+          ],
+        },
+        showNavigation: {
+          type: "boolean",
+          component: "switch",
+          ref: "showNavigation",
+          label: "Navigate",
+          defaultValue: false,
+          options: [
+            {
+              value: true,
+              translation: "properties.on",
+            },
+            {
+              value: false,
+              translation: "properties.off",
+            },
+          ],
+        },
+        navigation: {
+          translation: "Object.ActionButton.Navigation",
+          component: "expression-with-dropdown",
+          defaultValue: "goToSheet",
+          dropdownOnly: true,
+          type: "string",
+          ref: "navigation",
+          options: [
+            { value: "goToSheet", translation: "Object.ActionButton.GoToASheet" },
+            { value: "goToSheetById", translation: "Object.ActionButton.GoToSheetById" },
+            { value: "goToApp", translation: "Object.ActionButton.DocumentChain" },
+            { value: "goToWebsite", translation: "Object.ActionButton.OpenWebsiteEmail" },
+          ],
+          show: (item: Category) => item.showNavigation,
+        },
+        sheet: {
+          ref: "sheet",
+          translation: "properties.sheet",
+          type: "string",
+          component: "expression-with-dropdown",
+          show: (item: Category) => item.navigation === "goToSheet" && item.showNavigation,
+          options: async (_: any, hyperCubeHandler: any) => {
+            const sheets = await hyperCubeHandler.app.getSheetList();
+            return sheets.map((sheet: any) => ({
+              value: sheet.qInfo.qId,
+              label: sheet.qMeta.title,
+              showCondition: sheet.qData.showCondition,
+            }));
           },
-          {
-            value: false,
-            translation: 'properties.off',
-          },
-        ],
-      },
-      icon: {
-        label: "Icon",
-        component: "expression-with-dropdown",
-        dropdownOnly: true,
-        type: "string",
-        ref: "icon",
-        defaultValue: "None",
-        options: ICONS,
-        show: (item: Category) => item.showIcon, 
-      },
-      showDivider: {
-        type: 'boolean',
-        component: 'switch',
-        ref: 'showDivider',
-        label: 'Show divider',
-        defaultValue: false,
-        options: [
-          {
-            value: true,
-            translation: 'properties.on',
-          },
-          {
-            value: false,
-            translation: 'properties.off',
-          },
-        ],
-      },
-      showNavigation: {
-        type: 'boolean',
-        component: 'switch',
-        ref: 'showNavigation',
-        label: 'Navigate',
-        defaultValue: false,
-        options: [
-          {
-            value: true,
-            translation: 'properties.on',
-          },
-          {
-            value: false,
-            translation: 'properties.off',
-          },
-        ],
-      },
-      navigation: {
-        translation: "Object.ActionButton.Navigation",
-        component: "expression-with-dropdown",
-        defaultValue: "goToSheet",
-        dropdownOnly: true,
-        type: "string",
-        ref: "navigation",
-        options: [
-          { value: "goToSheet", translation: "Object.ActionButton.GoToASheet" },
-          { value: "goToSheetById", translation: "Object.ActionButton.GoToSheetById" },
-          { value: "goToApp", translation: "Object.ActionButton.DocumentChain" },
-          { value: "goToWebsite", translation: "Object.ActionButton.OpenWebsiteEmail" },
-        ],
-        show: (item: Category) => item.showNavigation
-      },
-      sheet: {
-        ref: "sheet",
-        translation: "properties.sheet",
-        type: "string",
-        component: "expression-with-dropdown",
-        show: (item: Category) => item.navigation === "goToSheet" && item.showNavigation, 
-        options: async (_: any, hyperCubeHandler: any) => {
-          const sheets = await hyperCubeHandler.app.getSheetList();
-          return sheets.map((sheet: any) => ({
-            value: sheet.qInfo.qId,
-            label: sheet.qMeta.title,
-            showCondition: sheet.qData.showCondition,
-          }));
+        },
+        appId: {
+          type: "string",
+          expression: "optional",
+          ref: "appId",
+          translation: "properties.appId",
+          show: (item: Category) => item.navigation === "goToApp" && item.showNavigation,
+        },
+        sheetId: {
+          type: "string",
+          ref: "sheetId",
+          translation: "properties.sheet",
+          expression: "optional",
+          show: (item: Category) =>
+            (item.navigation === "goToApp" || item.navigation === "goToSheetById") && item.showNavigation,
+        },
+        websiteUrl: {
+          type: "string",
+          expression: "optional",
+          ref: "websiteUrl",
+          translation: "properties.website",
+          show: (item: Category) => item.navigation === "goToWebsite" && item.showNavigation,
+        },
+        sameWindow: {
+          type: "boolean",
+          ref: "sameWindow",
+          translation: "properties.sameWindow",
+          show: (item: Category) =>
+            (item.navigation === "goToApp" || item.navigation === "goToWebsite") && item.showNavigation,
+          defaultValue: true,
+        },
+        showHide: {
+          type: "string",
+          ref: "showHide",
+          label: "Show if",
+          defaultValue: "1",
+          expression: "optional",
+        },
+        categories: {
+          ...generateCategorySchema(maxDepth, currentDepth + 1),
         },
       },
-      appId: {
-        type: "string",
-        expression: "optional",
-        ref: "appId",
-        translation: "properties.appId",
-        show: (item: Category) => item.navigation === "goToApp" && item.showNavigation,
-      },
-      sheetId: {
-        type: "string",
-        ref: "sheetId",
-        translation: "properties.sheet",
-        expression: "optional",
-        show: (item: Category) => (item.navigation === "goToApp" || item.navigation === "goToSheetById") && item.showNavigation,
-      },
-      websiteUrl: {
-        type: "string",
-        expression: "optional",
-        ref: "websiteUrl",
-        translation: "properties.website",
-        show: (item: Category) => item.navigation === "goToWebsite" && item.showNavigation,
-      },
-      sameWindow: {
-        type: "boolean",
-        ref: "sameWindow",
-        translation: "properties.sameWindow",
-        show: (item: Category) => (item.navigation === "goToApp" || item.navigation === "goToWebsite") && item.showNavigation,
-        defaultValue: true,
-      },
-      categories: {
-        ...generateCategorySchema(maxDepth, currentDepth + 1),
-      },
+    };
+  };
+
+  const maxDepth = 3;
+  const categories = generateCategorySchema(maxDepth);
+  const navigation = {
+    type: "items",
+    label: "Navigation",
+    component: "items",
+    items: {
+      categories,
     },
   };
-};
 
-const maxDepth = 3;
-const categories = generateCategorySchema(maxDepth);
-const navigation = {
-  type: "items",
-  label: "Navigation",
-  component: "items",
-  items: {
-    categories,
-  },
-};
-
-const buttonColor = {
-  component: "color-picker",
-  type: "object",
-  ref: "navigation.buttonColor",
-  translation: "Button color",
-  disableNone: false,
-  dualOutput: true,
-  defaultValue: {
-    color: "#FFFFFF",
-    index: "-1",
-  },
-};
-
-const buttonHoverColor = {
-  component: "color-picker",
-  type: "object",
-  ref: "navigation.buttonHoverColor",
-  translation: "Button hover color",
-  disableNone: false,
-  dualOutput: true,
-  defaultValue: {
-    color: "#f5f5f5",
-    index: "-1",
-  },
-};
-
-const fontColor = {
-  component: "color-picker",
-  type: "object",
-  ref: "navigation.fontColor",
-  translation: "Font color",
-  dualOutput: true,
-  defaultValue: {
-    color: "#404040",
-    index: "-1",
-  },
-};
-
-const fontColorOnSheet = {
-  component: "color-picker",
-  type: "object",
-  ref: "navigation.fontColorOnSheet",
-  translation: "Font color for active sheet",
-  dualOutput: true,
-  defaultValue: {
-    color: "#00873d",
-    index: "-1",
-  },
-};
-
-const backgroundColor = {
-  component: "color-picker",
-  type: "object",
-  ref: "navigation.backgroundColor",
-  translation: "properties.background.options",
-  disableNone: false,
-  dualOutput: true,
-  defaultValue: {
-    color: "#FFFFFF",
-    index: "-1",
-  },
-};
-
-const drawer = {
-  type: 'boolean',
-  component: 'switch',
-  ref: 'navigation.drawer',
-  label: 'Drawer',
-  defaultValue: false,
-  options: [
-    {
-      value: true,
-      translation: 'properties.on',
+  const buttonColor = {
+    component: "color-picker",
+    type: "object",
+    ref: "navigation.buttonColor",
+    translation: "Button color",
+    disableNone: false,
+    dualOutput: true,
+    defaultValue: {
+      color: "#FFFFFF",
+      index: "-1",
     },
-    {
-      value: false,
-      translation: 'properties.off',
-    },
-  ],
-}
+  };
 
-/* const orientation = {
+  const buttonHoverColor = {
+    component: "color-picker",
+    type: "object",
+    ref: "navigation.buttonHoverColor",
+    translation: "Button hover color",
+    disableNone: false,
+    dualOutput: true,
+    defaultValue: {
+      color: "#f5f5f5",
+      index: "-1",
+    },
+  };
+
+  const fontFamily = {
+    component: "expression-with-dropdown",
+    dropdownOnly: true,
+    type: "string",
+    translation: "Font family",
+    ref: "navigation.fontFamily",
+    options: FONTS,
+    defaultValue: "Source Sans Pro, sans-serif",
+  };
+  
+  const fontSize = {
+    type: "string",
+    expression: "optional",
+    defaultValue: "14px",
+    ref: "navigation.fontSize",
+    translation: "Font size",
+  };
+
+  const fontColor = {
+    component: "color-picker",
+    type: "object",
+    ref: "navigation.fontColor",
+    translation: "Font color",
+    dualOutput: true,
+    defaultValue: {
+      color: "#404040",
+      index: "-1",
+    },
+  };
+
+  const fontColorOnSheet = {
+    component: "color-picker",
+    type: "object",
+    ref: "navigation.fontColorOnSheet",
+    translation: "Font color for active sheet",
+    dualOutput: true,
+    defaultValue: {
+      color: "#00873d",
+      index: "-1",
+    },
+  };
+
+  const backgroundColor = {
+    component: "color-picker",
+    type: "object",
+    ref: "navigation.backgroundColor",
+    translation: "Background color",
+    disableNone: false,
+    dualOutput: true,
+    defaultValue: {
+      color: "#FFFFFF",
+      index: "-1",
+    },
+  };
+
+  const drawer = {
+    type: "boolean",
+    component: "switch",
+    ref: "navigation.drawer",
+    label: "Drawer",
+    defaultValue: false,
+    options: [
+      {
+        value: true,
+        translation: "properties.on",
+      },
+      {
+        value: false,
+        translation: "properties.off",
+      },
+    ],
+  };
+
+  /* const orientation = {
   label: "Orientation",
   component: "expression-with-dropdown",
   dropdownOnly: true,
@@ -835,106 +894,107 @@ const verticalAlignment = {
   ],
 }; */
 
-const drawerLocation = {
-  label: "Orientation",
-  component: "dropdown",
-  dropdownOnly: true,
-  type: "string",
-  ref: "navigation.drawerLocation",
-  defaultValue: "left",
-  options: [
-    { value: "left", label: "Left" },
-    { value: "right", label: "Right" },
-  ],
-  show: (item: Layout) => item.navigation.drawer,
-};
+  const drawerLocation = {
+    label: "Orientation",
+    component: "dropdown",
+    dropdownOnly: true,
+    type: "string",
+    ref: "navigation.drawerLocation",
+    defaultValue: "left",
+    options: [
+      { value: "left", label: "Left" },
+      { value: "right", label: "Right" },
+    ],
+    show: (item: Layout) => item.navigation.drawer,
+  };
 
-const drawerWidth = {
-  type: "string",
-  expression: "optional",
-  defaultValue: "300px",
-  ref: "navigation.drawerWidth",
-  translation: "Drawer width",
-  show: (item: Layout) => item.navigation.drawer,
-}
+  const drawerWidth = {
+    type: "string",
+    expression: "optional",
+    defaultValue: "300px",
+    ref: "navigation.drawerWidth",
+    translation: "Drawer width",
+    show: (item: Layout) => item.navigation.drawer,
+  };
 
-const drawerIcon = {
-  label: "Drawer icon",
-  component: "expression-with-dropdown",
-  dropdownOnly: true,
-  type: "string",
-  ref: "navigation.drawerIcon",
-  defaultValue: "Menu",
-  options: ICONS,
-  show: (item: Layout) => item.navigation.drawer,
-}
+  const drawerIcon = {
+    label: "Drawer icon",
+    component: "expression-with-dropdown",
+    dropdownOnly: true,
+    type: "string",
+    ref: "navigation.drawerIcon",
+    defaultValue: "Menu",
+    options: ICONS,
+    show: (item: Layout) => item.navigation.drawer,
+  };
 
-const drawerIconPosition = {
-  label: "Orientation",
-  component: "expression-with-dropdown",
-  dropdownOnly: true,
-  type: "string",
-  ref: "navigation.drawerIconPosition",
-  defaultValue: "middleCenter",
-  options: [
-    { value: "topLeft", label: "Top left" },
-    { value: "topCenter", label: "Top center" },
-    { value: "topRight", label: "Top right" },
-    { value: "middleLeft", label: "Middle left" },
-    { value: "middleCenter", label: "Middle center" },
-    { value: "middleCenter", label: "Middle right" },
-    { value: "bottomLeft", label: "Bottom left" },
-    { value: "bottomCenter", label: "Bottom center" },
-    { value: "bottomRight", label: "Bottom right" },
-  ],
-  show: (item: Layout) => item.navigation.drawer,
-};
+  const drawerIconPosition = {
+    translation: "Icon position",
+    component: "expression-with-dropdown",
+    dropdownOnly: true,
+    type: "string",
+    ref: "navigation.drawerIconPosition",
+    defaultValue: "middleCenter",
+    options: [
+      { value: "topLeft", label: "Top left" },
+      { value: "topCenter", label: "Top center" },
+      { value: "topRight", label: "Top right" },
+      { value: "middleLeft", label: "Middle left" },
+      { value: "middleCenter", label: "Middle center" },
+      { value: "middleCenter", label: "Middle right" },
+      { value: "bottomLeft", label: "Bottom left" },
+      { value: "bottomCenter", label: "Bottom center" },
+      { value: "bottomRight", label: "Bottom right" },
+    ],
+    show: (item: Layout) => item.navigation.drawer,
+  };
 
-const style = {
-  type: "items",
-  label: "Style",
-  component: "items",
-  items: {
-    drawer,
-    drawerLocation,
-    drawerWidth,
-    drawerIcon,
-    drawerIconPosition,
-    backgroundColor,
-    buttonColor,
-    buttonHoverColor,
-    fontColor,
-    fontColorOnSheet,
-  },
-};
+  const style = {
+    type: "items",
+    label: "Style",
+    component: "items",
+    items: {
+      drawer,
+      drawerLocation,
+      drawerWidth,
+      drawerIcon,
+      drawerIconPosition,
+      backgroundColor,
+      buttonColor,
+      buttonHoverColor,
+      fontFamily,
+      fontSize,
+      fontColor,
+      fontColorOnSheet,
+    },
+  };
 
-const definition = {
-  type: "items",
-  component: "accordion",
-  items: {
-    navigation,
-    settings: {
-      component: "expandable-items",
-      translation: "Common.Appearance",
-      uses: "settings",
-      items: {
-        style,
+  const definition = {
+    type: "items",
+    component: "accordion",
+    items: {
+      navigation,
+      settings: {
+        component: "expandable-items",
+        translation: "Common.Appearance",
+        uses: "settings",
+        items: {
+          style,
+        },
       },
     },
-  },
-};
+  };
 
-const support = {
-  snapshot: true,
-  export: false,
-  sharing: false,
-  exportData: false,
-  viewData: false,
-  quickMobile: true,
-  showDetails: false,
-};
+  const support = {
+    snapshot: true,
+    export: false,
+    sharing: false,
+    exportData: false,
+    viewData: false,
+    quickMobile: true,
+    showDetails: false,
+  };
 
-export default function ext(_galaxy: unknown) {
   return {
     definition,
     importProperties: null,

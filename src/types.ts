@@ -16,6 +16,7 @@ export type Category = {
   showIcon: boolean;
   showDivider: boolean;
   icon: string;
+  showHide: string;
   cId: string;
 };
 
@@ -45,6 +46,8 @@ export type NavigationProps = {
   drawerIconPosition: Position;
   buttonColor: Color;
   buttonHoverColor: Color;
+  fontFamily: string;
+  fontSize: string;
   fontColor: Color;
   fontColorOnSheet: Color;
   backgroundColor: Color;

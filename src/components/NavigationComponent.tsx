@@ -1,10 +1,10 @@
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
-import Collapse from "@mui/material/Collapse";
 import Box from "@mui/material/Box";
+import Collapse from "@mui/material/Collapse";
+import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
-import Divider from "@mui/material/Divider";
 import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
@@ -127,36 +127,69 @@ const NavigationComponent = ({ app, categories, senseNavigation, props, id, them
     }
   };
 
+  const showHideCondition = (showHide: string) => {
+    if (showHide === "True" || showHide === "true") {
+      return true;
+    }
+    if (showHide === "False" || showHide === "false") {
+      return false;
+    }
+    const numberValue = parseFloat(showHide);
+    if (!isNaN(numberValue) && numberValue !== 0) {
+      return true;
+    }
+    return false;
+  };
+
   const renderCategory = (category: Category, level: number = 0) => {
     let onCurrentSheet = false;
     if (category.showNavigation && (category.navigation === "goToSheet" || category.navigation === "goToSheetById")) {
       const navigationSheetId = category.navigation === "goToSheet" ? category.sheet : category.sheetId;
       onCurrentSheet = currentSheetId === navigationSheetId;
     }
+    const showHide = showHideCondition(category.showHide);
 
-    return (
+    return showHide ? (
       <div>
         <ListItemButton
+          className={`sn-navigation-category-button sn-navigation-category-button-level-${level} sn-navigation-category-button-${category.label}`}
           sx={{ pl: Math.max(4 * level, 1.5), pr: 1.5, pt: 1.5, pb: 1.5, backgroundColor: props.buttonColor.color }}
           key={category.cId}
           onClick={() => handleExpandClick(category)}
         >
-          {category.showIcon ? <ListItemIcon sx={{ pl: 1 }}>{loadIcon(category.icon)}</ListItemIcon> : null}
+          {category.showIcon ? (
+            <ListItemIcon
+              className={`sn-navigation-category-icon sn-navigation-category-icon-level-${level} sn-navigation-category-icon-${category.label}`}
+              sx={{ pl: 1 }}
+            >
+              {loadIcon(category.icon)}
+            </ListItemIcon>
+          ) : null}
           <ListItemText
+            className={`sn-navigation-category-text sn-navigation-category-text-level-${level} sn-navigation-category-text-${category.label}`}
             primaryTypographyProps={{
-              style: { color: onCurrentSheet ? props.fontColorOnSheet.color : props.fontColor.color },
+              style: {
+                color: onCurrentSheet ? props.fontColorOnSheet.color : props.fontColor.color,
+                fontSize: props.fontSize,
+                fontFamily: props.fontFamily,
+              },
             }}
             primary={category.label}
           />
           {(category.categories?.length ?? 0) > 0 ? (
             collapsed.includes(category.cId) ? (
-              <ExpandLess />
+              <ExpandLess
+                className={`sn-navigation-category-expand-icon sn-navigation-category-expand-icon-level-${level} sn-navigation-category-expand-icon-${category.label} sn-navigation-category-expand-less`}
+              />
             ) : (
-              <ExpandMore />
+              <ExpandMore
+                id={`sn-navigation-expand-icon-id-${category.label}`}
+                className={`sn-navigation-category-expand-icon sn-navigation-category-expand-icon-level-${level} sn-navigation-category-expand-icon-${category.label} sn-navigation-category-expand-more`}
+              />
             )
           ) : null}
         </ListItemButton>
-        {category.showDivider ? <Divider sx={{width: "95%", ml: "2.5%"}} /> : null}
+        {category.showDivider ? <Divider sx={{ width: "95%", ml: "2.5%" }} /> : null}
         {collapsed.includes(category.cId) && (
           <Collapse in={true} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
@@ -165,7 +198,7 @@ const NavigationComponent = ({ app, categories, senseNavigation, props, id, them
           </Collapse>
         )}
       </div>
-    );
+    ) : null;
   };
 
   const toggleDrawer = () => {
@@ -188,7 +221,11 @@ const NavigationComponent = ({ app, categories, senseNavigation, props, id, them
   };
 
   const list = (
-    <List sx={{ width: "100%", height: "100%", bgcolor: props.backgroundColor.color }} component="nav">
+    <List
+      className={`sn-navigation-list`}
+      sx={{ width: "100%", height: "100%", bgcolor: props.backgroundColor.color }}
+      component="nav"
+    >
       {categories.map((category: Category) => renderCategory(category))}
     </List>
   );
@@ -196,14 +233,18 @@ const NavigationComponent = ({ app, categories, senseNavigation, props, id, them
   return (
     <>
       {props.drawer ? (
-        <Box sx={{ 
-            ...(props.drawer ? getDrawerIconPosition(props.drawerIconPosition) : {}), 
-            display: "flex", 
-            height: "100%", 
-            width: "100%" 
-          }}>
+        <Box
+          className={`sn-navigation-drawer-icon-container`}
+          sx={{
+            ...(props.drawer ? getDrawerIconPosition(props.drawerIconPosition) : {}),
+            display: "flex",
+            height: "100%",
+            width: "100%",
+          }}
+        >
           <IconButton
-            sx={{margin: 0}}
+            className={`sn-navigation-drawer-icon`}
+            sx={{ margin: 0 }}
             edge="start"
             color="inherit"
             aria-label="menu"
@@ -212,6 +253,7 @@ const NavigationComponent = ({ app, categories, senseNavigation, props, id, them
             {loadIcon(props.drawerIcon)}
           </IconButton>
           <Drawer
+            className={`sn-navigation-drawer`}
             anchor={props.drawerLocation}
             open={drawerOpen}
             onClose={toggleDrawer}
@@ -239,7 +281,6 @@ const NavigationComponent = ({ app, categories, senseNavigation, props, id, them
       )}
     </>
   );
-      
-}
+};
 
 export default NavigationComponent;

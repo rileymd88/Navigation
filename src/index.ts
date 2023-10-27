@@ -20,12 +20,17 @@ import './index.css';
  */
 
 export default function supernova(galaxy: stardust.Galaxy) {
+  const {
+    flags,
+    translator,
+    anything,
+  } = galaxy;
   return {
     qae: {
       properties,
       data,
     },
-    ext: ext(galaxy),
+    ext: ext((anything as any).sense?.theme, translator, flags),
     component() {
       const element = useElement();
       const translator = useTranslator();
