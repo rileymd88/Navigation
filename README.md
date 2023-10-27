@@ -1,6 +1,8 @@
 # Navigation
 A basic navigation menu for Qlik Sense
 
+# Download
+The extension can be downloaded here: https://github.com/rileymd88/Navigation/releases/download/1.0.1/sn-navigation-ext.zip
 
 # CSS Documentation
 The table below lists the available class names and their respective descriptions to assist with CSS customization.
