@@ -8,6 +8,9 @@ The table below lists the available class names and their respective description
 | Class Name                                      | Description |
 |-------------------------------------------------|-------------|
 | `sn-navigation-list`                            | Container list that holds all category buttons. |
+| `sn-navigation-title-subtitle-container`                            | Container for title and subtitle |
+| `sn-navigation-title`                            | Title |
+| `sn-navigation-subtitle`                            | Subtitle |
 | `sn-navigation-drawer`                          | Represents the sidebar drawer component. |
 | `sn-navigation-drawer-icon-container`           | Container holding the icon used to toggle the drawer. |
 | `sn-navigation-drawer-icon`                     | The icon that toggles the drawer open or closed. |

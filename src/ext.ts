@@ -725,7 +725,7 @@ export default function ext(theme: stardust.Theme, translator: stardust.Translat
         showHide: {
           type: "string",
           ref: "showHide",
-          label: "Show if",
+          label: "Calculation condition",
           defaultValue: "1",
           expression: "optional",
         },
@@ -950,6 +950,22 @@ const verticalAlignment = {
     show: (item: Layout) => item.navigation.drawer,
   };
 
+  const title = {
+    type: "string",
+    expression: "optional",
+    defaultValue: "",
+    ref: "navigation.title",
+    translation: "Title",
+  };
+
+  const subTitle = {
+    type: "string",
+    expression: "optional",
+    defaultValue: "",
+    ref: "navigation.subTitle",
+    translation: "Subtitle",
+  };
+
   const customCss = {
     type: "string",
     expression: "optional",
@@ -975,6 +991,8 @@ const verticalAlignment = {
     label: "Style",
     component: "items",
     items: {
+      title,
+      subTitle,
       drawer,
       drawerLocation,
       drawerWidth,

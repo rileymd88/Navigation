@@ -1,9 +1,10 @@
+import { Typography } from "@mui/material";
 import { stardust } from "@nebula.js/stardust";
-import React, {useEffect} from 'react';
+import React, { useEffect } from "react";
 import type { Models } from "../types";
-import { Container } from "./common/styled";
 import Navigation from "./Navigation";
 import NavigationComponent from "./NavigationComponent";
+import { Container } from "./common/styled";
 
 export interface InitComponentProps {
   models: Models;
@@ -14,14 +15,14 @@ export interface InitComponentProps {
 const InitComponent = ({ models, translator, senseNavigation }: InitComponentProps) => {
   const { app, layout, interactions, theme } = models;
   const editMode = interactions.edit;
-  
+
   const backgroundElement = models.element.firstElementChild;
-  backgroundElement?.setAttribute("style", `background-color:${layout.navigation.backgroundColor?.color || "#FFFFFF" }`);
-  const contextMenu = models.element?.querySelector('.ignore-context-menu');
+  backgroundElement?.setAttribute("style", `background-color:${layout.navigation.backgroundColor?.color || "#FFFFFF"}`);
+  const contextMenu = models.element?.querySelector(".ignore-context-menu");
   contextMenu?.setAttribute("style", "display: none !important");
 
   useEffect(() => {
-    const style = document.createElement('style');
+    const style = document.createElement("style");
     style.innerHTML = layout.navigation.customCss.replace(/&/g, `div[tid="${layout.qInfo.qId}"]`);
     document.head.appendChild(style);
     return () => {
@@ -29,12 +30,20 @@ const InitComponent = ({ models, translator, senseNavigation }: InitComponentPro
     };
   }, [layout.navigation.customCss]);
 
-  return (
-    app &&
-    layout?.qInfo?.qId && (
-        <NavigationComponent theme={theme} id={layout.qInfo.qId} app={app} categories={layout.categories} senseNavigation={senseNavigation} props={layout.navigation} />
+  return app && layout?.qInfo?.qId ? (
+    layout.categories.length === 0 ? (
+      <Typography variant="subtitle1">No categories added</Typography>
+    ) : (
+      <NavigationComponent
+        theme={theme}
+        id={layout.qInfo.qId}
+        app={app}
+        categories={layout.categories}
+        senseNavigation={senseNavigation}
+        props={layout.navigation}
+      />
     )
-  );
+  ) : null;
 };
 
 export default InitComponent;

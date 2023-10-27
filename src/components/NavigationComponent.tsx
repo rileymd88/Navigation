@@ -9,6 +9,7 @@ import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
+import Typography from "@mui/material/Typography";
 import { stardust } from "@nebula.js/stardust";
 import * as Icons from "@qlik-trial/sprout/icons/react";
 import React, { useEffect, useRef, useState } from "react";
@@ -28,16 +29,16 @@ const toCSSClassName = (str: string) => {
   return str
     .trim()
     .toLowerCase()
-    .replace(/[^a-z0-9]/g, '-')
-    .replace(/-+/g, '-')
-    .replace(/^-|-$/g, '');
+    .replace(/[^a-z0-9]/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "");
 };
 
 const NavigationComponent = ({ app, categories, senseNavigation, props, id, theme }: NavigationComponentProps) => {
   const [collapsed, setCollapsed] = useState<string[]>([]);
   const [currentSheetId, setCurrentSheetId] = useState("");
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const storageKey = `sn-navigation-${(app as any).id}-${id}.collapsed`;
+  const storageKey = `sn-navigation-${(app as any).id}.collapsed`;
   const grid = document.querySelector(`#grid`) as HTMLElement;
   const gridPosition = grid?.getBoundingClientRect() || null;
   const top = grid && gridPosition ? `${gridPosition.top - grid.offsetTop}px` : "auto";
@@ -161,21 +162,27 @@ const NavigationComponent = ({ app, categories, senseNavigation, props, id, them
     return showHide ? (
       <div>
         <ListItemButton
-          className={`sn-navigation-category-button sn-navigation-category-button-level-${level} sn-navigation-category-button-${toCSSClassName(category.label)}`}
+          className={`sn-navigation-category-button sn-navigation-category-button-level-${level} sn-navigation-category-button-${toCSSClassName(
+            category.label
+          )}`}
           sx={{ pl: Math.max(4 * level, 1.5), pr: 1.5, pt: 1.5, pb: 1.5, backgroundColor: props.buttonColor.color }}
           key={category.cId}
           onClick={() => handleExpandClick(category)}
         >
           {category.showIcon ? (
             <ListItemIcon
-              className={`sn-navigation-category-icon sn-navigation-category-icon-level-${level} sn-navigation-category-icon-${toCSSClassName(category.label)}`}
+              className={`sn-navigation-category-icon sn-navigation-category-icon-level-${level} sn-navigation-category-icon-${toCSSClassName(
+                category.label
+              )}`}
               sx={{ pl: 1 }}
             >
               {loadIcon(category.icon)}
             </ListItemIcon>
           ) : null}
           <ListItemText
-            className={`sn-navigation-category-text sn-navigation-category-text-level-${level} sn-navigation-category-text-${toCSSClassName(category.label)}`}
+            className={`sn-navigation-category-text sn-navigation-category-text-level-${level} sn-navigation-category-text-${toCSSClassName(
+              category.label
+            )}`}
             primaryTypographyProps={{
               style: {
                 color: onCurrentSheet ? props.fontColorOnSheet.color : props.fontColor.color,
@@ -188,11 +195,15 @@ const NavigationComponent = ({ app, categories, senseNavigation, props, id, them
           {(category.categories?.length ?? 0) > 0 ? (
             collapsed.includes(category.cId) ? (
               <ExpandLess
-                className={`sn-navigation-category-expand-icon sn-navigation-category-expand-icon-level-${level} sn-navigation-category-expand-icon-${toCSSClassName(category.label)} sn-navigation-category-expand-less`}
+                className={`sn-navigation-category-expand-icon sn-navigation-category-expand-icon-level-${level} sn-navigation-category-expand-icon-${toCSSClassName(
+                  category.label
+                )} sn-navigation-category-expand-less`}
               />
             ) : (
               <ExpandMore
-                className={`sn-navigation-category-expand-icon sn-navigation-category-expand-icon-level-${level} sn-navigation-category-expand-icon-${toCSSClassName(category.label)} sn-navigation-category-expand-more`}
+                className={`sn-navigation-category-expand-icon sn-navigation-category-expand-icon-level-${level} sn-navigation-category-expand-icon-${toCSSClassName(
+                  category.label
+                )} sn-navigation-category-expand-more`}
               />
             )
           ) : null}
@@ -234,6 +245,20 @@ const NavigationComponent = ({ app, categories, senseNavigation, props, id, them
       sx={{ width: "100%", height: "100%", bgcolor: props.backgroundColor.color }}
       component="nav"
     >
+      <Box 
+      className={`sn-navigation-title-subtitle-container`}
+      sx={{ pt: 3 }}>
+        {props.title === "" ? null : (
+          <Typography className={`sn-navigation-title`} sx={{ pl: 1.5, color: props.fontColor, fontFamily: props.fontFamily }} variant="h3">
+            {props.title}
+          </Typography>
+        )}
+        {props.subTitle === "" ? null : (
+          <Typography className={`sn-navigation-subtitle`} sx={{ pl: 1.5, fontFamily: props.fontFamily }} variant="subtitle1">
+            {props.subTitle}
+          </Typography>
+        )}
+      </Box>
       {categories.map((category: Category) => renderCategory(category))}
     </List>
   );

@@ -36,6 +36,8 @@ export type Color = {
 }
 
 export type NavigationProps = {
+  title: string;
+  subTitle: string;
   orientation: "left" | "right" | "top" | "bottom";
   horizontalAlignment: "flex-start" | "flex-end" | "center" | "space-between" | "space-around" | "space-evenly";
   verticalAlignment: "flex-start" | "flex-end" | "center" | "space-between" | "space-around" | "space-evenly";
