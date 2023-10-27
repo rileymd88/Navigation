@@ -11,8 +11,6 @@ interface CategorySchema {
   };
 }
 
-
-
 const ICONS = [
   "None",
   "Abc",
@@ -587,6 +585,7 @@ const FONTS = [
 export default function ext(theme: stardust.Theme, translator: stardust.Translator, flags: stardust.Flags) {
   const generateCategorySchema = (maxDepth: number, currentDepth: number = 0): CategorySchema => {
     if (currentDepth >= maxDepth) return {};
+    const categoryLabel = currentDepth === 0 ? "Add category" : "Add sub-category";
     return {
       type: "array",
       ref: "categories",
@@ -594,7 +593,7 @@ export default function ext(theme: stardust.Theme, translator: stardust.Translat
       itemTitleRef: "label",
       allowAdd: true,
       allowRemove: true,
-      addTranslation: "Add category",
+      addTranslation: categoryLabel,
       items: {
         label: {
           type: "string",
