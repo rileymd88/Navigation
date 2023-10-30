@@ -2,7 +2,7 @@
 A basic navigation menu for Qlik Sense
 
 # Download
-The extension can be downloaded here: https://github.com/rileymd88/Navigation/releases/download/1.0.1/sn-navigation-ext.zip
+The extension can be downloaded here: https://github.com/rileymd88/Navigation/releases/download/1.0.2/sn-navigation-ext.zip
 
 # CSS Documentation
 The table below lists the available class names and their respective descriptions to assist with CSS customization.
@@ -25,6 +25,9 @@ The table below lists the available class names and their respective description
 | `sn-navigation-category-text`                   | General class for all text elements within a category. |
 | `sn-navigation-category-text-level-${level}`    | Class for text elements at a specific hierarchical level. |
 | `sn-navigation-category-text-${label}`          | Class for text elements specific to a category label. |
+| `sn-navigation-category-divider`                   | General class for all divider elements. |
+| `sn-navigation-category-divider-level-${level}`    | Class for divider elements at a specific hierarchical level. |
+| `sn-navigation-category-divider-${label}`          | Class for divider elements specific to a category label. |
 | `sn-navigation-category-expand-icon`            | General class for all expand/collapse icons in categories. |
 | `sn-navigation-category-expand-icon-level-${level}` | Class for expand/collapse icons at a specific hierarchical level. |
 | `sn-navigation-category-expand-icon-${label}`   | Class for expand/collapse icons specific to a category label. |
@@ -34,6 +37,13 @@ The table below lists the available class names and their respective description
 
 
 # Release history
+
+### v1.0.2
+* Added formula options for colors
+* Added header color options
+* Added bold font options
+* Added divider CSS class names
+* Bug fixes
 
 ### v1.0.1
 * Added show hide condition

@@ -13,7 +13,7 @@ import Typography from "@mui/material/Typography";
 import { stardust } from "@nebula.js/stardust";
 import * as Icons from "@qlik-trial/sprout/icons/react";
 import React, { useEffect, useRef, useState } from "react";
-import { type Category, type NavigationProps, type Position } from "../types";
+import { type Category, type Color, type NavigationProps, type Position } from "../types";
 import { encodeUrl, getCurrentProtocol, inIframe, removeProtocolHttp, urlHasEmailProtocol } from "../utils/urlUtils";
 
 interface NavigationComponentProps {
@@ -121,6 +121,7 @@ const NavigationComponent = ({ app, categories, senseNavigation, props, id, them
           break;
         }
       }
+      setDrawerOpen(false);
     }
   };
 
@@ -151,6 +152,12 @@ const NavigationComponent = ({ app, categories, senseNavigation, props, id, them
     return false;
   };
 
+  const getColor = (ref: keyof NavigationProps): string => {
+    const typeKey = `${ref}Type` as keyof NavigationProps;
+    const singleColor = props[typeKey] === "singleColor";
+    return singleColor ? (props[ref] as Color).color : (props[`${ref}Exp` as keyof NavigationProps] as string);
+  };
+
   const renderCategory = (category: Category, level: number = 0) => {
     let onCurrentSheet = false;
     if (category.showNavigation && (category.navigation === "goToSheet" || category.navigation === "goToSheetById")) {
@@ -165,7 +172,16 @@ const NavigationComponent = ({ app, categories, senseNavigation, props, id, them
           className={`sn-navigation-category-button sn-navigation-category-button-level-${level} sn-navigation-category-button-${toCSSClassName(
             category.label
           )}`}
-          sx={{ pl: Math.max(4 * level, 1.5), pr: 1.5, pt: 1.5, pb: 1.5, backgroundColor: props.buttonColor.color }}
+          sx={{
+            pl: Math.max(4 * level, 1.5),
+            pr: 1.5,
+            pt: 1.5,
+            pb: 1.5,
+            backgroundColor: getColor("buttonColor"),
+            "&:hover": {
+              backgroundColor: getColor("buttonHoverColor"),
+            },
+          }}
           key={category.cId}
           onClick={() => handleExpandClick(category)}
         >
@@ -185,7 +201,8 @@ const NavigationComponent = ({ app, categories, senseNavigation, props, id, them
             )}`}
             primaryTypographyProps={{
               style: {
-                color: onCurrentSheet ? props.fontColorOnSheet.color : props.fontColor.color,
+                color: onCurrentSheet ? getColor("fontColorOnSheet") : getColor("fontColor"),
+                fontWeight: props.fontBold ? 600 : 400,
                 fontSize: props.fontSize,
                 fontFamily: props.fontFamily,
               },
@@ -208,7 +225,14 @@ const NavigationComponent = ({ app, categories, senseNavigation, props, id, them
             )
           ) : null}
         </ListItemButton>
-        {category.showDivider ? <Divider sx={{ width: "95%", ml: "2.5%" }} /> : null}
+        {category.showDivider ? (
+          <Divider
+            className={`sn-navigation-category-divider sn-navigation-category-divider-level-${level} sn-navigation-category-divider-${toCSSClassName(
+              category.label
+            )}`}
+            sx={{ width: "95%", ml: "2.5%" }}
+          />
+        ) : null}
         {collapsed.includes(category.cId) && (
           <Collapse in={true} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
@@ -242,23 +266,32 @@ const NavigationComponent = ({ app, categories, senseNavigation, props, id, them
   const list = (
     <List
       className={`sn-navigation-list`}
-      sx={{ width: "100%", height: "100%", bgcolor: props.backgroundColor.color }}
+      sx={{ width: "100%", height: "100%", backgroundColor: getColor("backgroundColor") }}
       component="nav"
     >
-      <Box 
-      className={`sn-navigation-title-subtitle-container`}
-      sx={{ pt: 3 }}>
-        {props.title === "" ? null : (
-          <Typography className={`sn-navigation-title`} sx={{ pl: 1.5, color: props.fontColor, fontFamily: props.fontFamily }} variant="h3">
-            {props.title}
-          </Typography>
-        )}
-        {props.subTitle === "" ? null : (
-          <Typography className={`sn-navigation-subtitle`} sx={{ pl: 1.5, fontFamily: props.fontFamily }} variant="subtitle1">
-            {props.subTitle}
-          </Typography>
-        )}
-      </Box>
+      {props.title === "" && props.subTitle === "" ? null : (
+        <Box
+          className={`sn-navigation-title-subtitle-container`}
+          sx={{ pt: 3, pb: 1, backgroundColor: getColor("headerColor") }}
+        >
+          {props.title === "" ? null : (
+            <Typography
+              className={`sn-navigation-title`}
+              sx={{ pl: 1.5, color: getColor("titleFontColor"), fontFamily: props.fontFamily, fontSize: props.titleFontSize, fontWeight: props.titleFontBold ? 600 :  400}}
+            >
+              {props.title}
+            </Typography>
+          )}
+          {props.subTitle === "" ? null : (
+            <Typography
+              className={`sn-navigation-subtitle`}
+              sx={{ pl: 1.5, color: getColor("subtitleFontColor"), fontFamily: props.fontFamily, fontSize: props.subtitleFontSize, fontWeight: props.subtitleFontBold ? 600 :  400 }}
+            >
+              {props.subTitle}
+            </Typography>
+          )}
+        </Box>
+      )}
       {categories.map((category: Category) => renderCategory(category))}
     </List>
   );

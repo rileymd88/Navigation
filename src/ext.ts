@@ -582,6 +582,67 @@ const FONTS = [
   label: font,
 }));
 
+const getColor = (
+  ref: keyof NavigationProps,
+  translation: string,
+  color: string,
+  disableNone: boolean,
+  category?: boolean,
+  show?: (item: any) => boolean
+) => {
+  return {
+    component: "color-picker",
+    type: "object",
+    ref: category ? ref : `navigation.${ref}`,
+    translation,
+    disableNone,
+    dualOutput: true,
+    defaultValue: {
+      color,
+      index: "-1",
+    },
+    show,
+  };
+};
+
+const getColorType = (
+  ref: keyof NavigationProps,
+  translation: string,
+  category?: boolean,
+  show?: (item: any) => boolean
+) => {
+  return {
+    translation,
+    component: "dropdown",
+    dropdownOnly: true,
+    type: "string",
+    ref: category ? `${ref}Type` : `navigation.${ref}Type`,
+    defaultValue: "singleColor",
+    options: [
+      { value: "singleColor", label: "Single color" },
+      { value: "byExpression", label: "Expression" },
+    ],
+    show,
+  };
+};
+
+const getColorExp = (
+  ref: keyof NavigationProps,
+  translation: string,
+  defaultValue: string,
+  category?: boolean,
+  show?: (item: any) => boolean
+) => {
+  return {
+    type: "string",
+    expression: "optional",
+    ref: category ? `${ref}Exp` : `navigation.${ref}Exp`,
+    defaultValue,
+    translation,
+    show,
+  };
+};
+
 export default function ext(theme: stardust.Theme, translator: stardust.Translator, flags: stardust.Flags) {
   const generateCategorySchema = (maxDepth: number, currentDepth: number = 0): CategorySchema => {
     if (currentDepth >= maxDepth) return {};
@@ -747,32 +808,6 @@ export default function ext(theme: stardust.Theme, translator: stardust.Translat
     },
   };
 
-  const buttonColor = {
-    component: "color-picker",
-    type: "object",
-    ref: "navigation.buttonColor",
-    translation: "Button color",
-    disableNone: false,
-    dualOutput: true,
-    defaultValue: {
-      color: "#FFFFFF",
-      index: "-1",
-    },
-  };
-
-  const buttonHoverColor = {
-    component: "color-picker",
-    type: "object",
-    ref: "navigation.buttonHoverColor",
-    translation: "Button hover color",
-    disableNone: false,
-    dualOutput: true,
-    defaultValue: {
-      color: "#f5f5f5",
-      index: "-1",
-    },
-  };
-
   const fontFamily = {
     component: "expression-with-dropdown",
     dropdownOnly: true,
@@ -782,50 +817,13 @@ export default function ext(theme: stardust.Theme, translator: stardust.Translat
     options: FONTS,
     defaultValue: "Source Sans Pro, sans-serif",
   };
-  
+
   const fontSize = {
     type: "string",
     expression: "optional",
     defaultValue: "14px",
     ref: "navigation.fontSize",
     translation: "Font size",
-  };
-
-  const fontColor = {
-    component: "color-picker",
-    type: "object",
-    ref: "navigation.fontColor",
-    translation: "Font color",
-    dualOutput: true,
-    defaultValue: {
-      color: "#404040",
-      index: "-1",
-    },
-  };
-
-  const fontColorOnSheet = {
-    component: "color-picker",
-    type: "object",
-    ref: "navigation.fontColorOnSheet",
-    translation: "Font color for active sheet",
-    dualOutput: true,
-    defaultValue: {
-      color: "#00873d",
-      index: "-1",
-    },
-  };
-
-  const backgroundColor = {
-    component: "color-picker",
-    type: "object",
-    ref: "navigation.backgroundColor",
-    translation: "Background color",
-    disableNone: false,
-    dualOutput: true,
-    defaultValue: {
-      color: "#FFFFFF",
-      index: "-1",
-    },
   };
 
   const drawer = {
@@ -845,55 +843,6 @@ export default function ext(theme: stardust.Theme, translator: stardust.Translat
       },
     ],
   };
-
-  /* const orientation = {
-  label: "Orientation",
-  component: "expression-with-dropdown",
-  dropdownOnly: true,
-  type: "string",
-  ref: "navigation.orientation",
-  defaultValue: "top",
-  options: [
-    { value: "top", label: "Top" },
-    { value: "left", label: "Left" },
-    { value: "right", label: "Right" },
-    { value: "bottom", label: "Bottom" },
-  ],
-};
-
-const horizontalAlignment = {
-  label: "Horizontal alignment",
-  component: "expression-with-dropdown",
-  dropdownOnly: true,
-  type: "string",
-  ref: "navigation.horizontalAlignment",
-  defaultValue: "center",
-  options: [
-    { value: "flex-start", label: "Align left" },
-    { value: "flex-end", label: "Align right" },
-    { value: "center", label: "Center" },
-    { value: "space-between", label: "Space between" },
-    { value: "space-evenly", label: "Space evenly" },
-    { value: "space-around", label: "Space around" },
-  ],
-};
-
-const verticalAlignment = {
-  label: "Vertical alignment",
-  component: "expression-with-dropdown",
-  dropdownOnly: true,
-  type: "string",
-  ref: "navigation.verticalAlignment",
-  defaultValue: "flex-start",
-  options: [
-    { value: "flex-start", label: "Align top" },
-    { value: "flex-end", label: "Aligm bottom" },
-    { value: "center", label: "Center" },
-    { value: "space-between", label: "Space between" },
-    { value: "space-evenly", label: "Space evenly" },
-    { value: "space-around", label: "Space around" },
-  ],
-}; */
 
   const drawerLocation = {
     label: "Orientation",
@@ -976,39 +925,14 @@ const verticalAlignment = {
 
   const customCssText = {
     label: `Here you can write any CSS rules. Use "&" as a selector to target this particular element`,
-    component: 'text',
-  }
+    component: "text",
+  };
 
   const customCssTextExample = {
     label: `Example: & .qv-inner-object {
       border: 2px solid green; border-radius: 20px;
     }`,
-    component: 'text',
-  }
-
-  const style = {
-    type: "items",
-    label: "Style",
-    component: "items",
-    items: {
-      title,
-      subTitle,
-      drawer,
-      drawerLocation,
-      drawerWidth,
-      drawerIcon,
-      drawerIconPosition,
-      backgroundColor,
-      buttonColor,
-      buttonHoverColor,
-      fontFamily,
-      fontSize,
-      fontColor,
-      fontColorOnSheet,
-      customCss,
-      customCssText,
-      customCssTextExample,
-    },
+    component: "text",
   };
 
   const definition = {
@@ -1021,7 +945,259 @@ const verticalAlignment = {
         translation: "Common.Appearance",
         uses: "settings",
         items: {
-          style,
+          header: {
+            grouped: true,
+            type: "items",
+            label: "Header",
+            component: "items",
+            items: {
+              title,
+              titleFontSize: {
+                type: "string",
+                expression: "optional",
+                defaultValue: "24px",
+                ref: "navigation.titleFontSize",
+                translation: "Title font size",
+              },
+              titleFontBold: {
+                type: "boolean",
+                component: "switch",
+                ref: "navigation.titleFontBold",
+                translation: "Title font bold",
+                defaultValue: true,
+                options: [
+                  {
+                    value: true,
+                    translation: "properties.on",
+                  },
+                  {
+                    value: false,
+                    translation: "properties.off",
+                  },
+                ],
+              },
+              titleFontColorType: getColorType("titleFontColor", "Title font color"),
+              titleFontColor: getColor(
+                "titleFontColor",
+                "Title font color",
+                "#000000",
+                true,
+                false,
+                (item: Layout) => item.navigation.titleFontColorType === "singleColor"
+              ),
+              titleFontColorExp: getColorExp(
+                "titleFontColor",
+                "Title font color",
+                "#000000",
+                false,
+                (item: Layout) => item.navigation.titleFontColorType === "byExpression"
+              ),
+              subTitle,
+              subtitleFontSize: {
+                type: "string",
+                expression: "optional",
+                defaultValue: "12px",
+                ref: "navigation.subtitleFontSize",
+                translation: "Subtitle font size",
+              },
+              subtitleFontBold: {
+                type: "boolean",
+                component: "switch",
+                ref: "navigation.subtitleFontBold",
+                translation: "Subtitle font bold",
+                defaultValue: false,
+                options: [
+                  {
+                    value: true,
+                    translation: "properties.on",
+                  },
+                  {
+                    value: false,
+                    translation: "properties.off",
+                  },
+                ],
+              },
+              subtitleFontColorType: getColorType("subtitleFontColor", "Subtitle font color"),
+              subtitleFontColor: getColor(
+                "subtitleFontColor",
+                "Subtitle font color",
+                "#000000",
+                true,
+                false,
+                (item: Layout) => item.navigation.subtitleFontColorType === "singleColor"
+              ),
+              subtitleFontColorExp: getColorExp(
+                "subtitleFontColor",
+                "Subtitle font color",
+                "#000000",
+                false,
+                (item: Layout) => item.navigation.subtitleFontColorType === "byExpression"
+              ),
+              headerColorType: getColorType("headerColor", "Header color"),
+              headerColor: getColor(
+                "headerColor",
+                "Header color",
+                "#D3D3D3",
+                false,
+                false,
+                (item: Layout) => item.navigation.headerColorType === "singleColor"
+              ),
+              headerColorExp: getColorExp(
+                "headerColor",
+                "Header color",
+                "#D3D3D3",
+                false,
+                (item: Layout) => item.navigation.headerColorType === "byExpression"
+              ),
+            },
+          },
+          drawer: {
+            grouped: true,
+            type: "items",
+            label: "Drawer",
+            component: "items",
+            items: {
+              drawer,
+              drawerLocation,
+              drawerWidth,
+              drawerIcon,
+              drawerIconPosition,
+            },
+          },
+          background: {
+            grouped: true,
+            type: "items",
+            label: "Background",
+            component: "items",
+            items: {
+              backgroundColorType: getColorType("backgroundColor", "Background color"),
+              backgroundColor: getColor(
+                "backgroundColor",
+                "Background color",
+                "#FFFFFF",
+                false,
+                false,
+                (item: Layout) => item.navigation.backgroundColorType === "singleColor"
+              ),
+              backgroundColorExp: getColorExp(
+                "backgroundColor",
+                "Background color",
+                "#FFFFFF",
+                false,
+                (item: Layout) => item.navigation.backgroundColorType === "byExpression"
+              ),
+            },
+          },
+          buttons: {
+            grouped: true,
+            type: "items",
+            label: "Buttons",
+            component: "items",
+            items: {
+              buttonColorType: getColorType("buttonColor", "Button color"),
+              buttonColor: getColor(
+                "buttonColor",
+                "Button color",
+                "#FFFFFF",
+                false,
+                false,
+                (item: Layout) => item.navigation.buttonColorType === "singleColor"
+              ),
+              buttonColorExp: getColorExp(
+                "buttonColor",
+                "Button color",
+                "#FFFFFF",
+                false,
+                (item: Layout) => item.navigation.buttonColorType === "byExpression"
+              ),
+              buttonHoverColorType: getColorType("buttonHoverColor", "Button hover color"),
+              buttonHoverColor: getColor(
+                "buttonHoverColor",
+                "Button hover color",
+                "#f5f5f5",
+                false,
+                false,
+                (item: Layout) => item.navigation.buttonHoverColorType === "singleColor"
+              ),
+              buttonHoverColorExp: getColorExp(
+                "buttonHoverColor",
+                "Button hover color",
+                "#f5f5f5",
+                false,
+                (item: Layout) => item.navigation.buttonHoverColorType === "byExpression"
+              ),
+            },
+          },
+          font: {
+            grouped: true,
+            type: "items",
+            label: "Font",
+            component: "items",
+            items: {
+              fontFamily,
+              fontSize,
+              fontBold: {
+                type: "boolean",
+                component: "switch",
+                ref: "navigation.fontBold",
+                translation: "Font bold",
+                defaultValue: false,
+                options: [
+                  {
+                    value: true,
+                    translation: "properties.on",
+                  },
+                  {
+                    value: false,
+                    translation: "properties.off",
+                  },
+                ],
+              },
+              fontColorType: getColorType("fontColor", "Font color"),
+              fontColor: getColor(
+                "fontColor",
+                "Font color",
+                "#404040",
+                true,
+                false,
+                (item: Layout) => item.navigation.fontColorType === "singleColor"
+              ),
+              fontColorExp: getColorExp(
+                "fontColor",
+                "Font color",
+                "#404040",
+                false,
+                (item: Layout) => item.navigation.fontColorType === "byExpression"
+              ),
+              fontColorOnSheetType: getColorType("fontColorOnSheet", "Font color on active sheet"),
+              fontColorOnSheet: getColor(
+                "fontColorOnSheet",
+                "Font color on active sheet",
+                "#00873d",
+                true,
+                false,
+                (item: Layout) => item.navigation.fontColorOnSheetType === "singleColor"
+              ),
+              fontColorOnSheetExp: getColorExp(
+                "fontColorOnSheet",
+                "Font color on active sheet",
+                "#00873d",
+                false,
+                (item: Layout) => item.navigation.fontColorOnSheetType === "byExpression"
+              ),
+            },
+          },
+          advanced: {
+            grouped: true,
+            type: "items",
+            label: "Advanced",
+            component: "items",
+            items: {
+              customCss,
+              customCssText,
+              customCssTextExample,
+            },
+          },
         },
       },
     },

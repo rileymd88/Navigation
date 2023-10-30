@@ -35,6 +35,8 @@ export type Color = {
   color: string;
 }
 
+export type ColorType = "byExpression" | "singleColor";
+
 export type NavigationProps = {
   title: string;
   subTitle: string;
@@ -46,13 +48,37 @@ export type NavigationProps = {
   drawerWidth: string;
   drawerIcon: string;
   drawerIconPosition: Position;
+  titleFontSize: string;
+  titleFontBold: boolean;
+  titleFontColorType: ColorType;
+  titleFontColor: Color;
+  titleFontColorExp: string;
+  subtitleFontSize: string;
+  subtitleFontBold: boolean;
+  subtitleFontColorType: ColorType;
+  subtitleFontColor: Color;
+  subtitleFontColorExp: string;
+  headerColorType: ColorType;
+  headerColor: Color;
+  headerColorExp: string;
+  backgroundColorType: ColorType;
+  backgroundColor: Color;
+  backgroundColorExp: string;
+  buttonColorType: ColorType;
   buttonColor: Color;
+  buttonColorExp: string;
+  buttonHoverColorType: ColorType;
   buttonHoverColor: Color;
+  buttonHoverColorExp: string;
   fontFamily: string;
   fontSize: string;
+  fontBold: boolean;
+  fontColorType: ColorType;
   fontColor: Color;
+  fontColorExp: string;
+  fontColorOnSheetType: ColorType;
   fontColorOnSheet: Color;
-  backgroundColor: Color;
+  fontColorOnSheetExp: string;
   customCss: string;
 };
 
