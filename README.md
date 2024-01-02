@@ -38,6 +38,10 @@ The table below lists the available class names and their respective description
 
 # Release history
 
+### v1.0.3
+* Fixed drawer icon positioning bug
+* Fixed background color by expression bug
+
 ### v1.0.2
 * Added formula options for colors
 * Added header color options

@@ -891,7 +891,7 @@ export default function ext(theme: stardust.Theme, translator: stardust.Translat
       { value: "topRight", label: "Top right" },
       { value: "middleLeft", label: "Middle left" },
       { value: "middleCenter", label: "Middle center" },
-      { value: "middleCenter", label: "Middle right" },
+      { value: "middleRight", label: "Middle right" },
       { value: "bottomLeft", label: "Bottom left" },
       { value: "bottomCenter", label: "Bottom center" },
       { value: "bottomRight", label: "Bottom right" },

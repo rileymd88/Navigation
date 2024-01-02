@@ -266,7 +266,7 @@ const NavigationComponent = ({ app, categories, senseNavigation, props, id, them
   const list = (
     <List
       className={`sn-navigation-list`}
-      sx={{ width: "100%", height: "100%", backgroundColor: getColor("backgroundColor") }}
+      sx={{ width: "100%", height: "100%", backgroundColor: "rgb(0,0,128)" }}
       component="nav"
     >
       {props.title === "" && props.subTitle === "" ? null : (

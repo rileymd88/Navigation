@@ -1,7 +1,7 @@
 import { Typography, Box } from "@mui/material";
 import { stardust } from "@nebula.js/stardust";
 import React, { useEffect } from "react";
-import type { Models } from "../types";
+import type { Models, NavigationProps, Color } from "../types";
 import NavigationComponent from "./NavigationComponent";
 
 export interface InitComponentProps {
@@ -10,12 +10,19 @@ export interface InitComponentProps {
   senseNavigation: any;
 }
 
+
+const getColor = (props: NavigationProps, ref: keyof NavigationProps): string => {
+  const typeKey = `${ref}Type` as keyof NavigationProps;
+  const singleColor = props[typeKey] === "singleColor";
+  return singleColor ? (props[ref] as Color).color : (props[`${ref}Exp` as keyof NavigationProps] as string);
+};
+
 const InitComponent = ({ models, translator, senseNavigation }: InitComponentProps) => {
   const { app, layout, interactions, theme } = models;
   const editMode = interactions.edit;
 
   const backgroundElement = models.element.firstElementChild;
-  backgroundElement?.setAttribute("style", `background-color:${layout.navigation.backgroundColor?.color || "#FFFFFF"}`);
+  backgroundElement?.setAttribute("style", `background-color:${getColor(layout.navigation, "backgroundColor") || "#FFFFFF"}`);
   const contextMenu = models.element?.querySelector(".ignore-context-menu");
   contextMenu?.setAttribute("style", "display: none !important");
 
@@ -29,7 +36,7 @@ const InitComponent = ({ models, translator, senseNavigation }: InitComponentPro
   }, [layout.navigation.customCss]);
 
   return (
-    <Box position="relative">
+    <Box sx={{height: "100%"}} position="relative">
       {editMode && (
         <Box
           position="absolute"
