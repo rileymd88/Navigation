@@ -38,6 +38,9 @@ The table below lists the available class names and their respective description
 
 # Release history
 
+### v1.0.4
+* Fixed background color always being blue bug
+
 ### v1.0.3
 * Fixed drawer icon positioning bug
 * Fixed background color by expression bug

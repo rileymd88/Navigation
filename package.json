@@ -1,6 +1,6 @@
 {
   "name": "sn-navigation",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "packageManager": "yarn@1.22.19",
   "description": "Navigation",
   "author": "QlikTech International AB",
