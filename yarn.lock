@@ -2275,7 +2275,17 @@
     prettier-plugin-packagejson "2.4.5"
     prettier-plugin-svelte "3.0.3"
 
-"@qlik/sdk@0.23.1", "@qlik/sdk@^0.23.1":
+"@qlik/sdk@0.25.0":
+  version "0.25.0"
+  resolved "https://registry.yarnpkg.com/@qlik/sdk/-/sdk-0.25.0.tgz#839dbb9547e8197b215021a2193c5ae1ba6b647b"
+  integrity sha512-CVyTjGepHmZMlnik1Pc23xsrpVSxzqtxhiww6yoJAYx+ufQG8XZChJxIhpJTyErllCHgpydxRstR9crKJRhtjw==
+  dependencies:
+    "@types/jsonwebtoken" "9.0.2"
+    enigma.js "2.11.0"
+    jsonwebtoken "9.0.1"
+    ws "8.13.0"
+
+"@qlik/sdk@^0.23.1":
   version "0.23.1"
   resolved "https://registry.npmjs.org/@qlik/sdk/-/sdk-0.23.1.tgz"
   integrity sha512-rOjmpXhsuxvvVGa90YvbbtZ0Ab68J0i2mkfVODiRYnvLFueWAQOh39XSjJ8Gb42n2vqgE+IZJzJE3Haczy42kg==
@@ -2789,6 +2799,13 @@
   version "9.0.1"
   resolved "https://registry.npmjs.org/@types/jsonwebtoken/-/jsonwebtoken-9.0.1.tgz"
   integrity sha512-c5ltxazpWabia/4UzhIoaDcIza4KViOQhdbjRlfcIGVnsE3c3brkz9Z+F/EeJIECOQP7W7US2hNE930cWWkPiw==
+  dependencies:
+    "@types/node" "*"
+
+"@types/jsonwebtoken@9.0.2":
+  version "9.0.2"
+  resolved "https://registry.yarnpkg.com/@types/jsonwebtoken/-/jsonwebtoken-9.0.2.tgz#9eeb56c76dd555039be2a3972218de5bd3b8d83e"
+  integrity sha512-drE6uz7QBKq1fYqqoFKTDRdFCPHd5TCub75BM+D+cMx7NU9hUz7SESLfC2fSCXVFMO5Yj8sOWHuGqPgjc+fz0Q==
   dependencies:
     "@types/node" "*"
 
@@ -8174,6 +8191,16 @@ jsonwebtoken@9.0.0:
   version "9.0.0"
   resolved "https://registry.npmjs.org/jsonwebtoken/-/jsonwebtoken-9.0.0.tgz"
   integrity sha512-tuGfYXxkQGDPnLJ7SibiQgVgeDgfbPq2k2ICcbgqW8WxWLBAxKQM/ZCu/IT8SOSwmaYl4dpTFCW5xZv7YbbWUw==
+  dependencies:
+    jws "^3.2.2"
+    lodash "^4.17.21"
+    ms "^2.1.1"
+    semver "^7.3.8"
+
+jsonwebtoken@9.0.1:
+  version "9.0.1"
+  resolved "https://registry.yarnpkg.com/jsonwebtoken/-/jsonwebtoken-9.0.1.tgz#81d8c901c112c24e497a55daf6b2be1225b40145"
+  integrity sha512-K8wx7eJ5TPvEjuiVSkv167EVboBDv9PZdDoF7BgeQnBLVvZWW9clr2PsQHVJDTKaEIH5JBIwHujGcHp7GgI2eg==
   dependencies:
     jws "^3.2.2"
     lodash "^4.17.21"

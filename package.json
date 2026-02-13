@@ -76,7 +76,7 @@
     "@qlik/eslint-config": "0.4.9",
     "@qlik/eslint-config-react": "0.1.0",
     "@qlik/prettier-config": "0.3.0",
-    "@qlik/sdk": "0.23.1",
+    "@qlik/sdk": "0.25.0",
     "@qlik/tsconfig": "0.1.6",
     "@rollup/plugin-typescript": "11.1.2",
     "@scriptappy/cli": "0.8.0",
