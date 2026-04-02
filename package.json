@@ -68,7 +68,7 @@
     "@commitlint/config-conventional": "17.7.0",
     "@nebula.js/cli": "4.3.0",
     "@nebula.js/cli-build": "4.3.0",
-    "@nebula.js/cli-sense": "4.3.0",
+    "@nebula.js/cli-sense": "4.9.0",
     "@nebula.js/cli-serve": "4.3.0",
     "@nebula.js/stardust": "4.3.0",
     "@playwright/test": "1.37.0",
