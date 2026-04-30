@@ -12,8 +12,14 @@ import ListItemText from "@mui/material/ListItemText";
 import Typography from "@mui/material/Typography";
 import { stardust } from "@nebula.js/stardust";
 import * as Icons from "@qlik-trial/sprout/icons/react";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { type Category, type Color, type NavigationProps, type Position } from "../types";
+import {
+  buildClientManagedAppUrl,
+  buildCloudAppUrl,
+  getSelectionTransferParams,
+  isCloudEnvironment,
+} from "../utils/appChaining";
 import { encodeUrl, getCurrentProtocol, inIframe, removeProtocolHttp, urlHasEmailProtocol } from "../utils/urlUtils";
 
 interface NavigationComponentProps {
@@ -81,14 +87,15 @@ const NavigationComponent = ({ app, categories, senseNavigation, props, id, them
           break;
         }
         case "goToApp": {
-          const tempBookmark = (app as any).storeTempSelectionState && (await (app as any).storeTempSelectionState());
           let target = "";
           if (category.sameWindow) {
             target = inIframe() ? "_parent" : "_self";
           }
-          const url = `../sense/app/${encodeURIComponent(category.appId)}/sheet/${encodeURIComponent(
-            category.sheetId
-          )}/tempselectionstate/${encodeURIComponent(tempBookmark)}`;
+          const isCloud = await isCloudEnvironment();
+          const selections = isCloud ? [] : await getSelectionTransferParams(app as any, category).catch(() => []);
+          const url = isCloud
+            ? await buildCloudAppUrl(app as any, category)
+            : buildClientManagedAppUrl(category, selections);
           window.open(url, target);
           break;
         }

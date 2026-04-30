@@ -644,6 +644,18 @@ const getColorExp = (
 };
 
 export default function ext(theme: stardust.Theme, translator: stardust.Translator, flags: stardust.Flags) {
+  const getFieldOptions = async (_item: any, hyperCubeHandler: any, args: any = {}) => {
+    const app = args?.app || args?.model?.app || hyperCubeHandler?.app;
+    if (!app?.getFieldList) {
+      return [];
+    }
+    const fields = await app.getFieldList();
+    return fields.map((field: any) => ({
+      label: field.qName,
+      value: field.qName,
+    }));
+  };
+
   const generateCategorySchema = (maxDepth: number, currentDepth: number = 0): CategorySchema => {
     if (currentDepth >= maxDepth) return {};
     const categoryLabel = currentDepth === 0 ? "Add category" : "Add sub-category";
@@ -782,6 +794,45 @@ export default function ext(theme: stardust.Theme, translator: stardust.Translat
           show: (item: Category) =>
             (item.navigation === "goToApp" || item.navigation === "goToWebsite") && item.showNavigation,
           defaultValue: true,
+        },
+        limitSelectionTransfer: {
+          type: "boolean",
+          component: "switch",
+          ref: "limitSelectionTransfer",
+          label: "Limit transferred selections",
+          defaultValue: false,
+          options: [
+            {
+              value: true,
+              translation: "properties.on",
+            },
+            {
+              value: false,
+              translation: "properties.off",
+            },
+          ],
+          show: (item: Category) => item.navigation === "goToApp" && item.showNavigation,
+        },
+        selectionTransferFields: {
+          type: "array",
+          ref: "selectionTransferFields",
+          label: "Transferred selection fields",
+          itemTitleRef: "field",
+          allowAdd: true,
+          allowRemove: true,
+          addTranslation: "Add field",
+          show: (item: Category) => item.navigation === "goToApp" && item.showNavigation && item.limitSelectionTransfer,
+          items: {
+            field: {
+              type: "string",
+              ref: "field",
+              component: "expression-with-dropdown",
+              dropdownOnly: true,
+              label: "Field",
+              defaultValue: "",
+              options: getFieldOptions,
+            },
+          },
         },
         showHide: {
           type: "string",

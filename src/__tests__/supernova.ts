@@ -1,6 +1,10 @@
 import { stardust } from "@nebula.js/stardust";
 import { mock } from "jest-mock-extended";
 
+jest.mock("@qlik-trial/sprout/icons/react", () => ({}));
+jest.mock("@qlik-trial/sprout/theme/theme", () => () => ({}));
+jest.mock("../index.css", () => ({}));
+
 import supernova from "..";
 
 const fakeTheme = mock<stardust.Theme>();

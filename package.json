@@ -1,6 +1,6 @@
 {
   "name": "sn-navigation",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "packageManager": "yarn@1.22.19",
   "description": "Navigation",
   "author": "QlikTech International AB",
@@ -24,7 +24,7 @@
     "build:dev": "nebula build --watch --core core --mode development --config nebula.config.cjs",
     "lint": "eslint .",
     "start": "nebula serve --type sn-navigation --config nebula.config.cjs",
-    "sense": "nebula sense --meta src/meta.json && cd .. && python build.py extension",
+    "sense": "npm run build && nebula sense --meta src/meta.json --sourcemap true && python3 ../extension_build/build.py --type extension --extension-path . --tenant coe-emea.eu.qlikcloud.com",
     "test": "yarn test:unit",
     "test:unit": "jest",
     "test:e2e": "playwright test",

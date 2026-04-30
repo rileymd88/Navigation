@@ -2,7 +2,7 @@
 A basic navigation menu for Qlik Sense
 
 # Download
-The extension can be downloaded here: https://github.com/rileymd88/Navigation/releases/download/1.0.4/sn-navigation-ext.zip
+The extension can be downloaded here: https://github.com/rileymd88/Navigation/releases/download/1.0.5/sn-navigation-ext.zip
 
 # Settings overview
 The property panel is organized into two accordion areas: **Navigation** and **Appearance**.
@@ -28,7 +28,16 @@ For all color settings, you first choose **Single color** or **Expression**:
 | Sheet | Sets the sheet ID when using "go to app" or "go to sheet by ID". |
 | Website | Sets the destination URL (or email link) when using website/email navigation. |
 | Same window | Opens app/website in the same tab when enabled; otherwise opens a new tab. |
+| Limit transferred selections | Limits app-chaining selection transfer to only the fields listed in **Transferred selection fields**. When disabled, all current selections are transferred. |
+| Transferred selection fields | Adds the fields whose selections should be transferred when **Limit transferred selections** is enabled. If a field is listed, its selections are sent. |
 | Calculation condition | Controls visibility of the category using an expression (`1` means always visible). |
+
+### App chaining
+When using **Go to app**, the extension detects whether it is running in Qlik Cloud by calling `../api/v1/users/me`.
+
+In Qlik Cloud, app chaining keeps using Qlik's temporary selection state flow and opens the target sheet with `/tempselectionstate/...` appended to the app URL.
+
+In Qlik Sense client-managed, app chaining opens the normal target app/sheet URL and appends selection path segments such as `/state/analysis/select/Field/[Value]` for the current selections. By default, all current selections are transferred. To transfer only specific fields, enable **Limit transferred selections** and add the desired fields under **Transferred selection fields**.
 
 ## Appearance
 
@@ -112,6 +121,12 @@ The table below lists the available class names and their respective description
 
 
 # Release history
+
+### v1.0.5
+* Added client-managed app chaining support by appending selection path segments to the target app/sheet URL
+* Kept Qlik Cloud app chaining on temporary selection state URLs
+* Added optional app-chaining field filtering for transferred selections
+* Updated the `npm run sense` build/deploy script
 
 ### v1.0.4
 * Fixed background color always being blue bug

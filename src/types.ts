@@ -1,6 +1,10 @@
 import { stardust } from "@nebula.js/stardust";
 import type { EventEmitter } from "node:events";
 
+export type UseOptions = {
+  direction?: "ltr" | "rtl";
+};
+
 export type Category = {
   label: string;
   navigateToSheet: boolean;
@@ -18,6 +22,12 @@ export type Category = {
   icon: string;
   showHide: string;
   cId: string;
+  limitSelectionTransfer: boolean;
+  selectionTransferFields: SelectionTransferField[];
+};
+
+export type SelectionTransferField = {
+  field: string;
 };
 
 export type Position =
@@ -33,7 +43,7 @@ export type Position =
 
 export type Color = {
   color: string;
-}
+};
 
 export type ColorType = "byExpression" | "singleColor";
 

@@ -1,54 +1,54 @@
 interface SessionConfig {
-    url: string;
-  }
-  
-  interface App {
-    session?: {
-      config: SessionConfig;
-    };
-  }
-  
-  function checkForPrefix(url: URL): string {
-    const endUrl = String(url).split(url.host)[1];
-    const urlArray = endUrl.split("/");
-    return urlArray[1] === "app" ? "" : `/${urlArray[1]}`;
-  }
-  
-  function getSenseServerUrl(app: App): string | undefined {
-    let wsUrl: URL;
-    let protocol: string;
-    let isSecure: boolean;
-  
-    if (app?.session?.config) {
-      const { config } = app.session;
-      wsUrl = new URL(config.url);
-      const prefix = checkForPrefix(wsUrl);
-      isSecure = wsUrl.protocol === "wss:";
-      protocol = isSecure ? "https://" : "http://";
-      return protocol + wsUrl.host + prefix;
-    }
-    return undefined;
-  }
-  
-  export const getImageUrl = (imgUrl: string, app: App): string => {
-    imgUrl = imgUrl.replace(/^\.\.\//i, "/");
-    imgUrl = imgUrl.replace(/"/g, '\\"');
-    imgUrl = imgUrl.replace(/'/g, "\\'");
-    const baseUrl = getSenseServerUrl(app);
-    const rootPath = `${baseUrl}/`;
-    imgUrl = rootPath + (imgUrl[0] === "/" ? imgUrl.substr(1) : imgUrl);
-    return imgUrl;
-  };
-  
-  export const inIframe = (): boolean => {
-    try {
-      return window.self !== window.top;
-    } catch (error) {
-      return true;
-    }
-  };
+  url: string;
+}
 
-  const HTTP_PROTOCOL = "http://";
+interface App {
+  session?: {
+    config?: SessionConfig;
+  };
+}
+
+function checkForPrefix(url: URL): string {
+  const endUrl = String(url).split(url.host)[1];
+  const urlArray = endUrl.split("/");
+  return urlArray[1] === "app" ? "" : `/${urlArray[1]}`;
+}
+
+export function getSenseServerUrl(app: App): string | undefined {
+  let wsUrl: URL;
+  let protocol: string;
+  let isSecure: boolean;
+
+  if (app?.session?.config?.url) {
+    const { config } = app.session;
+    wsUrl = new URL(config.url);
+    const prefix = checkForPrefix(wsUrl);
+    isSecure = wsUrl.protocol === "wss:";
+    protocol = isSecure ? "https://" : "http://";
+    return protocol + wsUrl.host + prefix;
+  }
+  return undefined;
+}
+
+export const getImageUrl = (imgUrl: string, app: App): string => {
+  imgUrl = imgUrl.replace(/^\.\.\//i, "/");
+  imgUrl = imgUrl.replace(/"/g, '\\"');
+  imgUrl = imgUrl.replace(/'/g, "\\'");
+  const baseUrl = getSenseServerUrl(app);
+  const rootPath = `${baseUrl}/`;
+  imgUrl = rootPath + (imgUrl[0] === "/" ? imgUrl.substr(1) : imgUrl);
+  return imgUrl;
+};
+
+export const inIframe = (): boolean => {
+  try {
+    return window.self !== window.top;
+  } catch (error) {
+    return true;
+  }
+};
+
+const HTTP_PROTOCOL = "http://";
 const HTTPS_PROTOCOL = "https://";
 const EMAIL_PROTOCOL = "mailto:";
 
@@ -97,5 +97,3 @@ export const encodeUrl = (url: string): string => {
     .replace(UNMATCHED_SURROGATE_PAIR_REGEXP, UNMATCHED_SURROGATE_PAIR_REPLACE)
     .replace(ENCODE_CHARS_REGEXP, encodeURI);
 };
-
-  
